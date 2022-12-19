@@ -83,29 +83,89 @@ namespace Color_Picker_HEX
                     "      ██████████████\n" +
                    $"      ██████████████       {fGBlue}B{fGSelBlue}lue {barBlue} {blue}  \n{fGC}" +
                    $"      ███████{bGC}{fGD}#{hex}{bGD}{fGC}\n");
-                Console.WriteLine("                                         [↑ ↓ < >]   [ESC] - Exit");
+                Console.WriteLine("                           [W S A D]  [SHIFT +] - +/-10  [ESC] - Exit");
                 key = Console.ReadKey(true);
-                if ((key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.S) && selValue < 2)
-                    selValue++;
-                else if ((key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.W) && selValue > 0)
-                    selValue--;
-                else if (key.Key == ConsoleKey.LeftArrow || key.Key == ConsoleKey.A)
+                if ((key.Modifiers & ConsoleModifiers.Shift) != 0)
                 {
-                    if (selValue == 0 && red > 0)
-                        red--;
-                    else if (selValue == 1 && green > 0)
-                        green--;
-                    else if (selValue == 2 && blue > 0)
-                        blue--;
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.D:
+                            switch (selValue)
+                            {
+                                case 0:
+                                    red = Math.Min(red + 10, 255);
+                                    break;
+                                case 1:
+                                    green = Math.Min(green + 10, 255);
+                                    break;
+                                case 2:
+                                    blue = Math.Min(blue + 10, 255);
+                                    break;
+                            }
+                            break;
+                        case ConsoleKey.A:
+                            switch (selValue)
+                            {
+                                case 0:
+                                    red = Math.Max(red - 10, 0);
+                                    break;
+                                case 1:
+                                    green = Math.Max(green - 10, 0);
+                                    break;
+                                case 2:
+                                    blue = Math.Max(blue - 10, 0);
+                                    break;
+                            }
+                            break;
+                        case ConsoleKey.W:
+                            selValue = Math.Max(selValue - 1, 0);
+                            break;
+                        case ConsoleKey.S:
+                            selValue = Math.Min(selValue + 1, 2);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                else if (key.Key == ConsoleKey.RightArrow || key.Key == ConsoleKey.D)
+                else
                 {
-                    if (selValue == 0 && red < 255)
-                        red++;
-                    else if (selValue == 1 && green < 255)
-                        green++;
-                    else if (selValue == 2 && blue < 255)
-                        blue++;
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.D:
+                            switch (selValue)
+                            {
+                                case 0:
+                                    red = Math.Min(red + 1, 255);
+                                    break;
+                                case 1:
+                                    green = Math.Min(green + 1, 255);
+                                    break;
+                                case 2:
+                                    blue = Math.Min(blue + 1, 255);
+                                    break;
+                            }
+                            break;
+                        case ConsoleKey.A:
+                            switch (selValue)
+                            {
+                                case 0:
+                                    red = Math.Max(red - 1, 0);
+                                    break;
+                                case 1:
+                                    green = Math.Max(green - 1, 0);
+                                    break;
+                                case 2:
+                                    blue = Math.Max(blue - 1, 0);
+                                    break;
+                            }
+                            break;
+                        case ConsoleKey.W:
+                            selValue = Math.Max(selValue - 1, 0);
+                            break;
+                        case ConsoleKey.S:
+                            selValue = Math.Min(selValue + 1, 2);
+                            break;
+                    }
                 }
                 Console.SetCursorPosition(0, Console.CursorTop - 12);
             } while (key.Key != ConsoleKey.Escape);
